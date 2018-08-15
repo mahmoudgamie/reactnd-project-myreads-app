@@ -1,32 +1,39 @@
 import React from 'react'
+import BookShelfSelector from './bookShelfSelector'
+import PropTypes from 'prop-types'
 
 class Books extends React.Component {
-    render() {
-      return (
-        <div className="bookshelf-books">
+  static propTypes = {
+    books: PropTypes.array.isRequired,
+    shelf: PropTypes.string.isRequired
+  }
+  render() {
+    const { books, shelf } = this.props;
+    return (
+      <div className="bookshelf-books">
         <ol className="books-grid">
-          <li>
-            <div className="book">
-              <div className="book-top">
-                <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url("http://books.google.com/books/content?id=PGR2AwAAQBAJ&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE73-GnPVEyb7MOCxDzOYF1PTQRuf6nCss9LMNOSWBpxBrz8Pm2_mFtWMMg_Y1dx92HT7cUoQBeSWjs3oEztBVhUeDFQX6-tWlWz1-feexS0mlJPjotcwFqAg6hBYDXuK_bkyHD-y&source=gbs_api")' }}></div>
-                <div className="book-shelf-changer">
-                  <select>
-                    <option value="move" disabled>Move to...</option>
-                    <option value="currentlyReading">Currently Reading</option>
-                    <option value="wantToRead">Want to Read</option>
-                    <option value="read">Read</option>
-                    <option value="none">None</option>
-                  </select>
+          {books.map(book => book.shelf === shelf && (
+            <li key={book.id}>
+              <div className="book">
+                <div className="book-top">
+                  <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
+                  <BookShelfSelector />
                 </div>
+                <div className="book-title">{book.title}</div>
+                <ul>
+                  {book.authors.map((author, index) =>
+                    <li key={index} className="book-authors-list">
+                      <div className="book-authors">{author}</div>
+                    </li>
+                  )}
+                </ul>
               </div>
-              <div className="book-title">To Kill a Mockingbird</div>
-              <div className="book-authors">Harper Lee</div>
-            </div>
-          </li>
+            </li>
+          ))}
         </ol>
       </div>
-      )
-    }    
+    )
+  }
 }
 
 export default Books

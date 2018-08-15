@@ -11,7 +11,16 @@ class BooksApp extends React.Component {
      * users can use the browser's back and forward buttons to navigate between
      * pages, as well as provide a good URL they can bookmark and share.
      */
-    showSearchPage: false
+    showSearchPage: false,
+    allBooks: []
+  }
+
+  componentDidMount() {
+    BooksAPI.getAll().then(res => {
+      this.setState({ allBooks: res })
+      console.log(this.state.allBooks);
+      
+    })
   }
 
   render() {
@@ -42,21 +51,20 @@ class BooksApp extends React.Component {
             <div className="list-books">
               <div className="list-books-title">
                 <h1>MyReads</h1>
-                <Books />
               </div>
               <div className="list-books-content">
                 <div>
                   <div className="bookshelf">
                     <h2 className="bookshelf-title">Currently Reading</h2>
-                    <Books />
+                    <Books shelf="currentlyReading" books={this.state.allBooks}/>
                   </div>
                   <div className="bookshelf">
                     <h2 className="bookshelf-title">Want to Read</h2>
-                    <Books />
+                    <Books shelf="wantToRead" books={this.state.allBooks}/>
                   </div>
                   <div className="bookshelf">
                     <h2 className="bookshelf-title">Read</h2>
-
+                    <Books shelf="read" books={this.state.allBooks}/>
                   </div>
                 </div>
               </div>

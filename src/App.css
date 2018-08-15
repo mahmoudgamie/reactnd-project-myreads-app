@@ -8,6 +8,10 @@ body, .app {
   background: white;
 }
 
+ul {
+  padding: 0;
+}
+
 /* main page */
 
 .list-books-title {
@@ -131,6 +135,11 @@ body, .app {
 }
 .book-authors {
   color: #999;
+}
+
+ul li.book-authors-list {
+  list-style: none;
+  padding: 10px 0 5px 0;
 }
 
 .book-top {
