@@ -1,15 +1,38 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+import * as BooksAPI from './BooksAPI'
+import BookShelfSelector from './BookShelfSelector';
 
 class SearchBooks extends React.Component {
 
-  state = {
-    query: '',
+  static propTypes = {
+    books: PropTypes.array.isRequired,
   }
 
-  
-  
+  state = {
+    query: '',
+    searchResultsBooks: []
+  }
+
+  searchBooks(query) {
+    if (query) {
+      BooksAPI.search(query).then(res => {
+        if (!res || res.error) {
+          this.setState({ searchResultsBooks: [] })
+        } else {
+          console.log(res);
+          this.setState({ searchResultsBooks: res })
+        }
+      })
+    }
+  }
+
+
+
   render() {
-    const {query} = this.state
+    const { query, searchResultsBooks } = this.state
+    const { books } = this.props
+    console.log(books);
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -23,12 +46,30 @@ class SearchBooks extends React.Component {
                   However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                   you don't find a specific author or title. Every search is limited by search terms.
                 */}
-            <input type="text" placeholder="Search by title or author" />
+            <input
+              type="text"
+              placeholder="Search by title or author"
+              onChange={event => this.searchBooks(event.target.value)} />
 
           </div>
         </div>
         <div className="search-books-results">
-          <ol className="books-grid"></ol>
+          <ol className="books-grid">
+            {searchResultsBooks.map(book => (
+              <li key={book.id}>
+                <div className="book">
+                  <div className="book-top">
+                    <div className="book-cover" style={{ width: 128, height: 188, backgroundImage: book.imageLinks === undefined ? `url(https://s7.postimg.cc/shls4dbcb/persons.png)` : `url(${book.imageLinks.thumbnail})` }}></div>
+                    <div className="book-shelf-changer">
+                      <BookShelfSelector/>
+                    </div>
+                  </div>
+                  <div className="book-title">{book.title}</div>
+                  <div className="book-authors">{book.author}</div>
+                </div>
+              </li>
+            ))}
+          </ol>
         </div>
       </div>
     )
