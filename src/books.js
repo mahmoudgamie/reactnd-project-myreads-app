@@ -1,14 +1,16 @@
 import React from 'react'
-import BookShelfSelector from './bookShelfSelector'
+import BookShelfSelector from './BookShelfSelector'
 import PropTypes from 'prop-types'
 
 class Books extends React.Component {
+
   static propTypes = {
     books: PropTypes.array.isRequired,
     shelf: PropTypes.string.isRequired
   }
+
   render() {
-    const { books, shelf } = this.props;
+    const { books, shelf } = this.props
     return (
       <div className="bookshelf-books">
         <ol className="books-grid">
