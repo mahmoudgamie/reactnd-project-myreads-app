@@ -17,18 +17,23 @@ class BooksApp extends React.Component {
     allBooks: []
   }
 
-  updateQuery = (query) => {
-    this.setState({ query: query.trim() })
-  }
-
   componentDidMount() {
-    BooksAPI.getAll().then(res => {
-      this.setState({ allBooks: res })
+    BooksAPI.getAll().then(allBooks => {
+      this.setState({ allBooks })
     })
   }
 
+  updateShelf = (shelf, book) => {
+    let modifiedBooks = []
+    BooksAPI.update(book, shelf).then(() => {
+      book.shelf = shelf
+    })
+    modifiedBooks = this.state.allBooks.filter(bookRemoved => bookRemoved.id !== book.id)
+    this.setState({ allBooks: modifiedBooks.concat(book) })
+  }
+
   render() {
-    const {allBooks} = this.state
+    const { allBooks } = this.state
     return (
       <div className="app">
         <Route exact path='/' render={() => (
@@ -40,15 +45,15 @@ class BooksApp extends React.Component {
               <div>
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Currently Reading</h2>
-                  <Books shelf="currentlyReading" books={allBooks} />
+                  <Books shelf="currentlyReading" books={allBooks} updateShelf={this.updateShelf} />
                 </div>
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Want to Read</h2>
-                  <Books shelf="wantToRead" books={allBooks} />
+                  <Books shelf="wantToRead" books={allBooks} updateShelf={this.updateShelf}/>
                 </div>
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Read</h2>
-                  <Books shelf="read" books={allBooks} />
+                  <Books shelf="read" books={allBooks} updateShelf={this.updateShelf}/>
                 </div>
               </div>
             </div>
@@ -58,7 +63,7 @@ class BooksApp extends React.Component {
           </div>
         )} />
         <Route path='/search' render={() => (
-          <SearchBooks books={allBooks}/>
+          <SearchBooks books={allBooks} updateShelf={this.updateShelf}/>
         )} />
       </div>
     )

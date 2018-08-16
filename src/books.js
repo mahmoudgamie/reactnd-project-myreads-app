@@ -10,7 +10,7 @@ class Books extends React.Component {
   }
 
   render() {
-    const { books, shelf } = this.props
+    const { books, shelf, updateShelf } = this.props
     return (
       <div className="bookshelf-books">
         <ol className="books-grid">
@@ -19,7 +19,7 @@ class Books extends React.Component {
               <div className="book">
                 <div className="book-top">
                   <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
-                  <BookShelfSelector />
+                  <BookShelfSelector book={book} updateShelf={updateShelf}/>
                 </div>
                 <div className="book-title">{book.title}</div>
                 <ul>

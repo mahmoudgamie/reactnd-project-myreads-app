@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import * as BooksAPI from './BooksAPI'
+import { Link } from 'react-router-dom'
 import BookShelfSelector from './BookShelfSelector';
 
 class SearchBooks extends React.Component {
@@ -36,7 +37,7 @@ class SearchBooks extends React.Component {
     return (
       <div className="search-books">
         <div className="search-books-bar">
-          <a className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</a>
+          <Link to='./' className="close-search">Close</Link>
           <div className="search-books-input-wrapper">
             {/*
                   NOTES: The search from BooksAPI is limited to a particular set of search terms.
@@ -60,9 +61,7 @@ class SearchBooks extends React.Component {
                 <div className="book">
                   <div className="book-top">
                     <div className="book-cover" style={{ width: 128, height: 188, backgroundImage: book.imageLinks === undefined ? `url(https://s7.postimg.cc/shls4dbcb/persons.png)` : `url(${book.imageLinks.thumbnail})` }}></div>
-                    <div className="book-shelf-changer">
                       <BookShelfSelector/>
-                    </div>
                   </div>
                   <div className="book-title">{book.title}</div>
                   <div className="book-authors">{book.author}</div>
