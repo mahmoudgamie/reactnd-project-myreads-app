@@ -27,9 +27,9 @@ class BooksApp extends React.Component {
     let modifiedBooks = []
     BooksAPI.update(book, shelf).then(() => {
       book.shelf = shelf
+      modifiedBooks = this.state.allBooks.filter(bookRemoved => bookRemoved.id !== book.id)
+      this.setState({ allBooks: modifiedBooks.concat(book) })
     })
-    modifiedBooks = this.state.allBooks.filter(bookRemoved => bookRemoved.id !== book.id)
-    this.setState({ allBooks: modifiedBooks.concat(book) })
   }
 
   render() {
@@ -49,11 +49,11 @@ class BooksApp extends React.Component {
                 </div>
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Want to Read</h2>
-                  <Books shelf="wantToRead" books={allBooks} updateShelf={this.updateShelf}/>
+                  <Books shelf="wantToRead" books={allBooks} updateShelf={this.updateShelf} />
                 </div>
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Read</h2>
-                  <Books shelf="read" books={allBooks} updateShelf={this.updateShelf}/>
+                  <Books shelf="read" books={allBooks} updateShelf={this.updateShelf} />
                 </div>
               </div>
             </div>
@@ -63,7 +63,7 @@ class BooksApp extends React.Component {
           </div>
         )} />
         <Route path='/search' render={() => (
-          <SearchBooks books={allBooks} updateShelf={this.updateShelf}/>
+          <SearchBooks books={allBooks} updateShelf={this.updateShelf} />
         )} />
       </div>
     )

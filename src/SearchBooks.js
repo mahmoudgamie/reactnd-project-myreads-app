@@ -11,7 +11,6 @@ class SearchBooks extends React.Component {
   }
 
   state = {
-    query: '',
     searchResultsBooks: []
   }
 
@@ -21,7 +20,16 @@ class SearchBooks extends React.Component {
         if (!res || res.error) {
           this.setState({ searchResultsBooks: [] })
         } else {
-          console.log(res);
+          res.map(resultBook => {
+            this.props.books.forEach(book => {
+              if (resultBook.id === book.id) {
+                resultBook.shelf = book.shelf
+              } else {
+                resultBook.shelf = 'none';
+              }
+            })
+            return resultBook;
+          })
           this.setState({ searchResultsBooks: res })
         }
       })
@@ -31,8 +39,8 @@ class SearchBooks extends React.Component {
 
 
   render() {
-    const { query, searchResultsBooks } = this.state
-    const { books } = this.props
+    const { searchResultsBooks } = this.state
+    const { books, updateShelf } = this.props
     console.log(books);
     return (
       <div className="search-books">
@@ -61,7 +69,7 @@ class SearchBooks extends React.Component {
                 <div className="book">
                   <div className="book-top">
                     <div className="book-cover" style={{ width: 128, height: 188, backgroundImage: book.imageLinks === undefined ? `url(https://s7.postimg.cc/shls4dbcb/persons.png)` : `url(${book.imageLinks.thumbnail})` }}></div>
-                      <BookShelfSelector/>
+                    <BookShelfSelector book={book} updateShelf={updateShelf} />
                   </div>
                   <div className="book-title">{book.title}</div>
                   <div className="book-authors">{book.author}</div>
