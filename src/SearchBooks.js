@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import * as BooksAPI from './BooksAPI'
 import { Link } from 'react-router-dom'
-import BookShelfSelector from './BookShelfSelector';
+import BookShelfSelector from './bookShelfSelector';
 
 class SearchBooks extends React.Component {
 
@@ -63,7 +63,7 @@ class SearchBooks extends React.Component {
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-            {searchResultsBooks.map(book => (
+            {searchResultsBooks && searchResultsBooks.map(book => (
               <li key={book.id}>
                 <div className="book">
                   <div className="book-top">
