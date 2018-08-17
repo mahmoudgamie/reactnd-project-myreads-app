@@ -11,12 +11,15 @@ class SearchBooks extends React.Component {
   }
 
   state = {
+    query: '',
     searchResultsBooks: []
   }
 
+
   searchBooks(query) {
-    if (query) {
-      BooksAPI.search(query).then(res => {
+    if (query || query !== undefined) {
+      let trimedQuery = query.trim()
+      BooksAPI.search(trimedQuery).then(res => {
         if (!res || res.error) {
           this.setState({ searchResultsBooks: [] })
         } else {
@@ -33,10 +36,11 @@ class SearchBooks extends React.Component {
           this.setState({ searchResultsBooks: res })
         }
       })
+      console.log(this.state.searchResultsBooks);
+    } else {
+      this.setState({ searchResultsBooks: [] })
     }
   }
-
-
 
   render() {
     const { searchResultsBooks } = this.state
@@ -57,6 +61,7 @@ class SearchBooks extends React.Component {
             <input
               type="text"
               placeholder="Search by title or author"
+
               onChange={event => this.searchBooks(event.target.value)} />
 
           </div>
